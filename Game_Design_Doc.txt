@@ -1,0 +1,9 @@
+#This Game Design Document is based on the sections given by Penaz91 on his 2DGD-F0TH project
+---Project Description---
+Thi game design document describes the details of a 2D top-down Trading Simulation/Strategy game,
+which is intended for a Casual demographic.
+
+The game's setting is the Middle Ages. The player will be controlling a character in order to
+harvest resources and trade with other characters (NPCs).
+
+The project will have only polygons as graphics.
