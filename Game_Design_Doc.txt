@@ -24,3 +24,36 @@ There's no real progression here.
 The game will have a single map only. Although the starting point could be randomized or,
 at least, have well defined set of starting points and pick one of them to spawn the player at
 the start of the game.
+
+===Levels and Environments===
+The game will contain a single hexmap. The map will have the resources on specific hexes.
+The resources will have polygon based graphics. A stone will be a 4-sided gray irregular polygon,
+while a Pine tree will be a brown rectangle with three green triangles on top. 
+
+The player will need to move the character to the resources and start harvesting them.
+When the character's load is full the player won't be able to harvest more resources and will
+require to walk to the vendor to sell some items.
+
+===Gameplay===
+
+---Goals---
+Long Term Goal: Beat his/her own highscore.
+Short Term Goal: Optimize the way the character gets it's income.
+
+---Game Mechanics---
+There will be two resources: Timber & Stone.
+A particular hex will have a random set of resources.
+The amount of a timber or stone resource will appear next to the resource itself.
+Timber will keep on increasing sporadically in correlation to the amount of timber on a hex,
+up to a maximum amount. Stone won't increase.
+
+Every time the player harvests a resource the number next to it will go down
+and the character's capacity bar will be filled accordingly.
+The capacity bar will only appear on the screen whenever the player harvest a resource or
+when the player's capacity if full, which at this point will turn red and
+won't leave the screen until it decreases.
+The player can't harvest a resource when the bar is full. 
+
+In order to decrease the character's capacity, the player will need to visit a vendor.
+When the players sells resources his/her gold coins will increase and the capacity will be emptied.
+The amount of money is dependant on the amount of resources brought to the vendor.
