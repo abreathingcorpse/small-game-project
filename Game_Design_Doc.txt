@@ -1,5 +1,5 @@
 #This Game Design Document is based on the sections given by Penaz91 on his 2DGD-F0TH project
----Project Description---
+===Project Description===
 Thi game design document describes the details of a 2D top-down Trading Simulation/Strategy game,
 which is intended for a Casual demographic.
 
@@ -7,3 +7,20 @@ The game's setting is the Middle Ages. The player will be controlling a characte
 harvest resources and trade with other characters (NPCs).
 
 The project will have only polygons as graphics.
+
+===Characters===
+This is more of a minigame prototype, so there's no actual story.
+
+===Storyline===
+This is more of a minigame prototype, so there's no actual story.
+
+---The Theme---
+This game is about getting the most gold coins by the timer the timer from the game gets to 0.
+It should be a game that people may pick up whenever they have about 10 minutes to kill
+and would like to see if they can beat their own score.
+
+---Progression---
+There's no real progression here.
+The game will have a single map only. Although the starting point could be randomized or,
+at least, have well defined set of starting points and pick one of them to spawn the player at
+the start of the game.
