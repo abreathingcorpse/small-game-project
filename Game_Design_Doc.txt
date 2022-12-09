@@ -57,3 +57,13 @@ The player can't harvest a resource when the bar is full.
 In order to decrease the character's capacity, the player will need to visit a vendor.
 When the players sells resources his/her gold coins will increase and the capacity will be emptied.
 The amount of money is dependant on the amount of resources brought to the vendor.
+
+---Skills---
+The player will need to press keyboard or Joypad buttons.
+If a Joypad is used, then the player will need to use a Joystick as well.
+
+---Items/Powerups---
+The player will be able to the following upgrades by visiting his/her base (spawn location):
+* Harvesting Speed.- The cooldown for harvesting resources is reduced.
+* Speed.- The characters movement speed is increased.
+* Capacity,- The character will be able to hold more items.
