@@ -67,3 +67,14 @@ The player will be able to the following upgrades by visiting his/her base (spaw
 * Harvesting Speed.- The cooldown for harvesting resources is reduced.
 * Speed.- The characters movement speed is increased.
 * Capacity,- The character will be able to hold more items.
+
+---Difficulty Management and Progression---
+The game will become harder during a single run because the resources will become more and more
+scarce.
+During subsecuent runs, however, the game will become easier, since now the player will know
+where the resources appear on the map. The difficulty for the player will be, to come up with
+different strategies to optimize the gold coins that they have at the end of the run.
+
+For instance, they could try to stop buying skills, since they will cost gold. Or to only harvest
+timber after an x amount of minutes, in order to maximize the amount of timber they can get on a
+single run. 
