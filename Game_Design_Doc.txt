@@ -78,3 +78,23 @@ different strategies to optimize the gold coins that they have at the end of the
 For instance, they could try to stop buying skills, since they will cost gold. Or to only harvest
 timber after an x amount of minutes, in order to maximize the amount of timber they can get on a
 single run. 
+
+---Losing Conditions---
+The game can be lost in the following ways:
+* The player restarts the run or exits the game.
+* The player could not beat his/her own highscore (Bad Ending).
+
+---Graphic Style and Art---
+The game will not have a background. In other words, it'll simply be a black background.
+The art will consist of geometrical figures. The character will consist of two triangles.
+With the exterior being filled and the interior one being unfilled, giving us an irregular
+4-sided polygon which resembles an arrow.
+The resources will have polygon based graphics as well. A stone will be a 4-sided gray
+irregular polygon, while a Pine tree will be a brown rectangle with three green triangles on top. 
+
+---Sound and Music---
+The game won't have any music.
+The game will have at least three sound effects in order to give some feedback to the player:
+* The sound of a pickaxe hitting a rock.
+* The sound of an axe hitting a tree.
+* The sound of coins rattling.
