@@ -15,7 +15,7 @@ This is more of a minigame prototype, so there's no actual story.
 This is more of a minigame prototype, so there's no actual story.
 
 ---The Theme---
-This game is about getting the most gold coins by the timer the timer from the game gets to 0.
+This game is about getting the most gold coins by the time the timer from the game gets to 0.
 It should be a game that people may pick up whenever they have about 10 minutes to kill
 and would like to see if they can beat their own score.
 
@@ -190,3 +190,7 @@ within a two month window, then we can start thinking of implementing one of the
 * Get an artist to replace the character art.
 * Add a song to the game.
 * Replace both the Main Menu and the Pause Menu with ones that actually look good.
+* Translate the little text there is to Spanish.
+* Add a Start Animation when a New Game is started, similar to Mario Party's 
+  "Start!" Voice/Animation.
+- Add a similar Time Up animation.
