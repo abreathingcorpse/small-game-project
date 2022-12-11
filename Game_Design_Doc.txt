@@ -131,3 +131,62 @@ The player will also require some keys/buttons assigned for the following action
 * Upgrade Capacity. 
 
 The default mappings may be updated by the player.
+
+===Accessibility Options===
+There won't be any. This is a prototype.
+
+===Tools===
+Text Editor: Vim
+Framework: SFML
+Version Control: GitHub
+Art: Krita
+
+===Marketing===
+The game is intended to be a prototype. The first project to add to my portfolio, so that I can
+show what I'm able to do.
+
+---Target Audience---
+People who could help me improve or people who would like me to show them my previous work.
+
+---Available Platforms---
+As a Linux user, I hate that there are so many great games out there without Linux support,
+which is why my development philosophy will be Linux first. I'll be developing in Linux so,
+the game will run there.
+Since my target audience tipically uses Windows, the game must run on Windows 10 as well.
+
+---Monetization---
+This is a free prototype released under the GPL v3.
+
+---Internationalization and Localization---
+Although there won't be much text. The game will be in English.
+
+===Other/Random Ideas===
+The idea is to first develop something that works. In case the working prototype was developed
+within a two month window, then we can start thinking of implementing one of these ideas.
+
+* Local Multiplayer
+* Random Resource locations, that is, the resources will be spawned randonmly, based on some
+  defined rules, instead of being put there manually. Which would give some replayability, since
+  the map would be different every run.
+* Spawn more than one vendor.
+- Random vendor spawn locations.
+- Random buy prices, some vendors will pay more for wood, other will pay more for stone.
+  Based on the amount of resources that they currently have in store.
+* Have rare resources, for instance, silver ore, gold ore, etc.
+- Develop a resource selling system, since the player might want to sell all of its timber to a
+  specific vendor but, save his ores for another one.
+* The character's speed will be slowed based on the current percentage capacity.
+- Rework the Upgrades. One of the three should be something like: Strength.- Reduces the slow
+  effect of the current capacity percentage.
+  It could the a rework of the same Capacity stat, or the Speed stat.
+
+  Perhaps the Harvesting Speed could be Upgraded to Strength.- Increases the damage done to the
+  resources (more damage, more resources harvested) and reduces the slow effect of the current
+  capacity percentage. If this is the case, perhaps the Speed stat could reduce the harvesting
+  cooldown as well.
+
+* Replace the black background from the game.
+* Get an artist to replace the resources art.
+* Get an artist to replace the character art.
+* Add a song to the game.
+* Replace both the Main Menu and the Pause Menu with ones that actually look good.
