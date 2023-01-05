@@ -49,8 +49,8 @@ up to a maximum amount. Stone won't increase.
 
 Every time the player harvests a resource the number next to it will go down
 and the character's capacity bar will be filled accordingly.
-The capacity bar will only appear on the screen whenever the player harvest a resource or
-when the player's capacity if full, which at this point will turn red and
+The capacity bar will only appear on the screen whenever the player harvests a resource or
+when the player's capacity is full, which at this point will turn red and
 won't leave the screen until it decreases.
 The player can't harvest a resource when the bar is full. 
 
