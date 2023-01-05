@@ -20,7 +20,7 @@ float angle = 45;
 
 // --- RenderWindow ---
 // This is toggled between true/false whenever the player presses F
-bool fullscreen_flag = true;
+bool fullscreen_flag = false;
 // --- # ---
 
 // Receives the referece of window, as well as the fullscreen_flag

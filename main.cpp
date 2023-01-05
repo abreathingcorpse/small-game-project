@@ -6,8 +6,13 @@
 using namespace sf;
 using namespace std;
 
+// Game Loop parameters
+float framerate = 1.f/60; // .f forces it to be a float, so that it's not 0
+Time dt = sf::seconds(framerate);
+sf::Clock game_clock;
+
 int main() {
-	
+
 	// Declare the window
 	RenderWindow window;
 	settings.antialiasingLevel = 8;
@@ -44,9 +49,18 @@ int main() {
 		// https://www.sfml-dev.org/tutorials/2.5/window-inputs.php
 		// Keep in mind the character.setRotation(angle), it'll have to be sum of
 		// vectors or something. This will require a Game Loop set up
-		if (Keyboard::isKeyPressed(Keyboard::D)) {
-			character.move(Vector2f(1.0,0));
-			character.setRotation(90.f);
+		
+		sf::Time elapsed = game_clock.restart();
+		cout << "elapsed: " << elapsed.asMicroseconds() << endl;
+		while (elapsed.asMicroseconds() > 0) {
+			Time deltaTime = min(dt, elapsed);
+			cout << "deltaTime: " << dt.asMicroseconds() << endl;
+			if (Keyboard::isKeyPressed(Keyboard::D)) {
+				cout << "Processed. " << endl;
+				character.move(Vector2f(1.0,0));
+				character.setRotation(90.f);
+			}
+			elapsed -= deltaTime;
 		}
 
 		// TODO: Bounding boxes
