@@ -51,13 +51,17 @@ int main() {
 		// vectors or something. This will require a Game Loop set up
 		
 		sf::Time elapsed = game_clock.restart();
-		cout << "elapsed: " << elapsed.asMicroseconds() << endl;
 		while (elapsed.asMicroseconds() > 0) {
 			Time deltaTime = min(dt, elapsed);
-			cout << "deltaTime: " << dt.asMicroseconds() << endl;
+//			cout << "deltaTime(us): " << deltaTime.asMicroseconds() << endl;
+		
 			if (Keyboard::isKeyPressed(Keyboard::D)) {
-				cout << "Processed. " << endl;
-				character.move(Vector2f(1.0,0));
+//				cout << "0.5 float * deltaTime(us): " 
+//				<< 0.5f * deltaTime.asMicroseconds() << endl;
+				cout << "deltaTime(us): " << deltaTime.asMicroseconds() << endl;
+
+				// TODO: I need to tweak the velocity or timestamp
+				character.move(Vector2f(1.f * deltaTime.asMicroseconds(),0));
 				character.setRotation(90.f);
 			}
 			elapsed -= deltaTime;
