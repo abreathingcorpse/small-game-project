@@ -10,6 +10,7 @@ using namespace std;
 float framerate = 1.f/60; // .f forces it to be a float, so that it's not 0
 Time dt = sf::seconds(framerate);
 sf::Clock game_clock;
+float v0 = 160.0; // in px / s
 
 int main() {
 
@@ -53,15 +54,12 @@ int main() {
 		sf::Time elapsed = game_clock.restart();
 		while (elapsed.asMicroseconds() > 0) {
 			Time deltaTime = min(dt, elapsed);
-//			cout << "deltaTime(us): " << deltaTime.asMicroseconds() << endl;
 		
+			// TODO: This happens even if the window is out of focus. It shouldn't
 			if (Keyboard::isKeyPressed(Keyboard::D)) {
-//				cout << "0.5 float * deltaTime(us): " 
-//				<< 0.5f * deltaTime.asMicroseconds() << endl;
-				cout << "deltaTime(us): " << deltaTime.asMicroseconds() << endl;
-
-				// TODO: I need to tweak the velocity or timestamp
-				character.move(Vector2f(1.f * deltaTime.asMicroseconds(),0));
+				cout << "deltaTime(s): " << deltaTime.asSeconds() << endl;
+				cout << "x: " << character.getPosition().x << endl;
+				character.move(Vector2f(v0 * deltaTime.asSeconds(),0));
 				character.setRotation(90.f);
 			}
 			elapsed -= deltaTime;
