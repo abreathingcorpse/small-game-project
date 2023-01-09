@@ -11,6 +11,8 @@ float framerate = 1.f/60; // .f forces it to be a float, so that it's not 0
 Time dt = sf::seconds(framerate);
 sf::Clock game_clock;
 float v0 = 160.0; // in px / s
+Vector2f velocity; // velocity vector
+float rotation_angle = 0; // in degrees
 
 int main() {
 
@@ -46,21 +48,81 @@ int main() {
 		// the game loop
 		Event event;
 
-		// TODO: Use the sf::Keyboard instead of the Event::KeyPressed
-		// https://www.sfml-dev.org/tutorials/2.5/window-inputs.php
-		// Keep in mind the character.setRotation(angle), it'll have to be sum of
-		// vectors or something. This will require a Game Loop set up
-		
+		// TODO: Implement the A and W keys as well 
 		sf::Time elapsed = game_clock.restart();
 		while (elapsed.asMicroseconds() > 0) {
 			Time deltaTime = min(dt, elapsed);
 		
+			velocity = Vector2f(0,0); // set the vector to default before processing
+
 			// TODO: This happens even if the window is out of focus. It shouldn't
-			if (Keyboard::isKeyPressed(Keyboard::D)) {
-				cout << "deltaTime(s): " << deltaTime.asSeconds() << endl;
+			// TODO: Diagonal movement is quicker than movement along a single axis,
+			//	I'll need to normalize it
+			if (Keyboard::isKeyPressed(Keyboard::D) &&
+			!Keyboard::isKeyPressed(Keyboard::A)) {
 				cout << "x: " << character.getPosition().x << endl;
-				character.move(Vector2f(v0 * deltaTime.asSeconds(),0));
-				character.setRotation(90.f);
+
+				velocity += Vector2f(v0,0);
+				cout << "vx: " << velocity.x << endl;
+
+				character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
+				velocity.y * deltaTime.asSeconds()));
+
+				// If the player was pressing A and suddenly presses D
+				// this woulnd't really be true however, the frames go so fast
+				// that it becomes true very quickly
+				angle = ( angle + 90.f ) / 2;
+				character.setRotation(angle);
+			}
+			if (Keyboard::isKeyPressed(Keyboard::S) &&
+			!Keyboard::isKeyPressed(Keyboard::W)) {
+				cout << "y: " << character.getPosition().y << endl;
+
+				velocity += Vector2f(0,v0);
+
+				character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
+				velocity.y * deltaTime.asSeconds()));
+
+				// If the player was pressing W and suddenly presses S
+				// this woulnd't really be true however, the frames go so fast
+				// that it becomes true very quickly
+				angle = ( angle + 180.f ) / 2;
+				character.setRotation(angle);
+			}
+			if (Keyboard::isKeyPressed(Keyboard::A) &&
+			!Keyboard::isKeyPressed(Keyboard::D)) {
+				cout << "x: " << character.getPosition().x << endl;
+
+				velocity += Vector2f(-v0,0);
+				cout << "vx: " << velocity.x << endl;
+
+				character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
+				velocity.y * deltaTime.asSeconds()));
+
+				// If the player was pressing D and suddenly presses A
+				// this woulnd't really be true however, the frames go so fast
+				// that it becomes true very quickly
+				angle = ( angle + 270.f ) / 2;
+				character.setRotation(angle);
+			}
+			if (Keyboard::isKeyPressed(Keyboard::W) &&
+			!Keyboard::isKeyPressed(Keyboard::S)) {
+				cout << "y: " << character.getPosition().y << endl;
+
+				velocity += Vector2f(0,-v0);
+
+				character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
+				velocity.y * deltaTime.asSeconds()));
+
+				if (Keyboard::isKeyPressed(Keyboard::A) &&
+				!Keyboard::isKeyPressed(Keyboard::D)) {
+					angle = 315.f;
+				} else if (Keyboard::isKeyPressed(Keyboard::D) &&
+				!Keyboard::isKeyPressed(Keyboard::A)) {
+					angle = 45.f;
+				} else { angle = 0.f; }
+
+				character.setRotation(angle);
 			}
 			elapsed -= deltaTime;
 		}
