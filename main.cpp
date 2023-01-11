@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
+#include <iostream> // for debugging
 #include "support.h"
+#include <cmath> // for normalizing the velocity vector
 
 // Declaring the namespaces
 using namespace sf;
@@ -11,6 +12,8 @@ float framerate = 1.f/60; // .f forces it to be a float, so that it's not 0
 Time dt = sf::seconds(framerate);
 sf::Clock game_clock;
 float v0 = 160.0; // in px / s
+Vector2f direction; // vector that's modified by pressing WASD
+Vector2f unitary_velocity; // normalized velocity vector
 Vector2f velocity; // velocity vector
 float rotation_angle = 0; // in degrees
 
@@ -27,6 +30,9 @@ int main() {
 	// Make the character's ConvexShape a Point Count of 4 and define those points.
 	// NOTE: this needs to be inside the main(), since main() runs before any calls outside
 	// of its scope
+	// TODO: Implement a View, because whenever the window is resized, the Character has a
+	// different Texture width & height than that of the screen. Since, initially, they had a
+	// 1:1 relationship
 	character.setPointCount(4);
 	character.setPoint(0, Vector2f(TRIANGLE_BASE / 2, TRIANGLE_HEIGHT - TAILCUT_HEIGHT ));
 	character.setPoint(1, Vector2f(0.0, TRIANGLE_HEIGHT));
@@ -48,22 +54,29 @@ int main() {
 		// the game loop
 		Event event;
 
-		// TODO: Implement the A and W keys as well 
 		sf::Time elapsed = game_clock.restart();
 		while (elapsed.asMicroseconds() > 0) {
 			Time deltaTime = min(dt, elapsed);
 		
-			velocity = Vector2f(0,0); // set the vector to default before processing
+			direction = Vector2f(0,0); // set the vector to default before processing
 
 			// TODO: This happens even if the window is out of focus. It shouldn't
-			// TODO: Diagonal movement is quicker than movement along a single axis,
-			//	I'll need to normalize it
 			if (Keyboard::isKeyPressed(Keyboard::D) &&
 			!Keyboard::isKeyPressed(Keyboard::A)) {
-				cout << "x: " << character.getPosition().x << endl;
+//				cout << "x: " << character.getPosition().x << endl;
+//				cout << "y: " << character.getPosition().y << endl;
 
-				velocity += Vector2f(v0,0);
-				cout << "vx: " << velocity.x << endl;
+				// Pressing D modifies the direction vector,
+				// which is then normalized and multiplied by v0
+				direction += Vector2f(1,0);
+				float direction_magnitude = sqrt ( pow(direction.x,2) + 
+				pow(direction.y,2)  );
+				unitary_velocity = direction / direction_magnitude;
+//				cout << "ux: " << unitary_velocity.x << endl;
+//				cout << "uy: " << unitary_velocity.y << endl;
+				velocity = v0 * unitary_velocity;
+//				cout << "vx: " << velocity.x << endl;
+//				cout << "vy: " << velocity.y << endl;
 
 				character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
 				velocity.y * deltaTime.asSeconds()));
@@ -76,9 +89,20 @@ int main() {
 			}
 			if (Keyboard::isKeyPressed(Keyboard::S) &&
 			!Keyboard::isKeyPressed(Keyboard::W)) {
-				cout << "y: " << character.getPosition().y << endl;
+//				cout << "x: " << character.getPosition().x << endl;
+//				cout << "y: " << character.getPosition().y << endl;
 
-				velocity += Vector2f(0,v0);
+				// Pressing S modifies the direction vector,
+				// which is then normalized and multiplied by v0
+				direction += Vector2f(0,1);
+				float direction_magnitude = sqrt ( pow(direction.x,2) + 
+				pow(direction.y,2)  );
+				unitary_velocity = direction / direction_magnitude;
+//				cout << "ux: " << unitary_velocity.x << endl;
+//				cout << "uy: " << unitary_velocity.y << endl;
+				velocity = v0 * unitary_velocity;
+//				cout << "vx: " << velocity.x << endl;
+//				cout << "vy: " << velocity.y << endl;
 
 				character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
 				velocity.y * deltaTime.asSeconds()));
@@ -91,10 +115,14 @@ int main() {
 			}
 			if (Keyboard::isKeyPressed(Keyboard::A) &&
 			!Keyboard::isKeyPressed(Keyboard::D)) {
-				cout << "x: " << character.getPosition().x << endl;
 
-				velocity += Vector2f(-v0,0);
-				cout << "vx: " << velocity.x << endl;
+				// Pressing A modifies the direction vector,
+				// which is then normalized and multiplied by v0
+				direction += Vector2f(-1,0);
+				float direction_magnitude = sqrt ( pow(direction.x,2) + 
+				pow(direction.y,2)  );
+				unitary_velocity = direction / direction_magnitude;
+				velocity = v0 * unitary_velocity;
 
 				character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
 				velocity.y * deltaTime.asSeconds()));
@@ -107,9 +135,14 @@ int main() {
 			}
 			if (Keyboard::isKeyPressed(Keyboard::W) &&
 			!Keyboard::isKeyPressed(Keyboard::S)) {
-				cout << "y: " << character.getPosition().y << endl;
 
-				velocity += Vector2f(0,-v0);
+				// Pressing W modifies the direction vector,
+				// which is then normalized and multiplied by v0
+				direction += Vector2f(0,-1);
+				float direction_magnitude = sqrt ( pow(direction.x,2) + 
+				pow(direction.y,2)  );
+				unitary_velocity = direction / direction_magnitude;
+				velocity = v0 * unitary_velocity;
 
 				character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
 				velocity.y * deltaTime.asSeconds()));
