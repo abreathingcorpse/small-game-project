@@ -17,6 +17,116 @@ Vector2f unitary_velocity; // normalized velocity vector
 Vector2f velocity; // velocity vector
 float rotation_angle = 0; // in degrees
 
+void keyboard_movement(sf::Time elapsed) {
+
+	while (elapsed.asMicroseconds() > 0) {
+		Time deltaTime = min(dt, elapsed);
+	
+		direction = Vector2f(0,0); // set the vector to default before processing
+
+		// TODO: This happens even if the window is out of focus. It shouldn't
+		if (Keyboard::isKeyPressed(Keyboard::D) &&
+		!Keyboard::isKeyPressed(Keyboard::A)) {
+	//		cout << "x: " << character.getPosition().x << endl;
+	//		cout << "y: " << character.getPosition().y << endl;
+
+			// Pressing D modifies the direction vector,
+			// which is then normalized and multiplied by v0
+			direction += Vector2f(1,0);
+			float direction_magnitude = sqrt ( pow(direction.x,2) + 
+			pow(direction.y,2)  );
+			unitary_velocity = direction / direction_magnitude;
+	//		cout << "ux: " << unitary_velocity.x << endl;
+	//		cout << "uy: " << unitary_velocity.y << endl;
+			velocity = v0 * unitary_velocity;
+	//		cout << "vx: " << velocity.x << endl;
+	//		cout << "vy: " << velocity.y << endl;
+
+			character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
+			velocity.y * deltaTime.asSeconds()));
+
+			// If the player was pressing A and suddenly presses D
+			// this woulnd't really be true however, the frames go so fast
+			// that it becomes true very quickly
+			angle = ( angle + 90.f ) / 2;
+			character.setRotation(angle);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::S) &&
+		!Keyboard::isKeyPressed(Keyboard::W)) {
+	//		cout << "x: " << character.getPosition().x << endl;
+	//		cout << "y: " << character.getPosition().y << endl;
+
+			// Pressing S modifies the direction vector,
+			// which is then normalized and multiplied by v0
+			direction += Vector2f(0,1);
+			float direction_magnitude = sqrt ( pow(direction.x,2) + 
+			pow(direction.y,2)  );
+			unitary_velocity = direction / direction_magnitude;
+	//		cout << "ux: " << unitary_velocity.x << endl;
+	//		cout << "uy: " << unitary_velocity.y << endl;
+			velocity = v0 * unitary_velocity;
+	//		cout << "vx: " << velocity.x << endl;
+	//		cout << "vy: " << velocity.y << endl;
+
+			character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
+			velocity.y * deltaTime.asSeconds()));
+
+			// If the player was pressing W and suddenly presses S
+			// this woulnd't really be true however, the frames go so fast
+			// that it becomes true very quickly
+			angle = ( angle + 180.f ) / 2;
+			character.setRotation(angle);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::A) &&
+		!Keyboard::isKeyPressed(Keyboard::D)) {
+
+			// Pressing A modifies the direction vector,
+			// which is then normalized and multiplied by v0
+			direction += Vector2f(-1,0);
+			float direction_magnitude = sqrt ( pow(direction.x,2) + 
+			pow(direction.y,2)  );
+			unitary_velocity = direction / direction_magnitude;
+			velocity = v0 * unitary_velocity;
+
+			character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
+			velocity.y * deltaTime.asSeconds()));
+
+			// If the player was pressing D and suddenly presses A
+			// this woulnd't really be true however, the frames go so fast
+			// that it becomes true very quickly
+			angle = ( angle + 270.f ) / 2;
+			character.setRotation(angle);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::W) &&
+		!Keyboard::isKeyPressed(Keyboard::S)) {
+
+			// Pressing W modifies the direction vector,
+			// which is then normalized and multiplied by v0
+			direction += Vector2f(0,-1);
+			float direction_magnitude = sqrt ( pow(direction.x,2) + 
+			pow(direction.y,2)  );
+			unitary_velocity = direction / direction_magnitude;
+			velocity = v0 * unitary_velocity;
+
+			character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
+			velocity.y * deltaTime.asSeconds()));
+
+			if (Keyboard::isKeyPressed(Keyboard::A) &&
+			!Keyboard::isKeyPressed(Keyboard::D)) {
+				angle = 315.f;
+			} else if (Keyboard::isKeyPressed(Keyboard::D) &&
+			!Keyboard::isKeyPressed(Keyboard::A)) {
+				angle = 45.f;
+			} else { angle = 0.f; }
+
+			character.setRotation(angle);
+		}
+
+		elapsed -= deltaTime;
+
+	} // while elapsed > 0
+}
+
 int main() {
 
 	// Declare the window
@@ -54,111 +164,11 @@ int main() {
 		// the game loop
 		Event event;
 
+		// get the elapsed time between current and last frame
 		sf::Time elapsed = game_clock.restart();
-		while (elapsed.asMicroseconds() > 0) {
-			Time deltaTime = min(dt, elapsed);
-		
-			direction = Vector2f(0,0); // set the vector to default before processing
-
-			// TODO: This happens even if the window is out of focus. It shouldn't
-			if (Keyboard::isKeyPressed(Keyboard::D) &&
-			!Keyboard::isKeyPressed(Keyboard::A)) {
-//				cout << "x: " << character.getPosition().x << endl;
-//				cout << "y: " << character.getPosition().y << endl;
-
-				// Pressing D modifies the direction vector,
-				// which is then normalized and multiplied by v0
-				direction += Vector2f(1,0);
-				float direction_magnitude = sqrt ( pow(direction.x,2) + 
-				pow(direction.y,2)  );
-				unitary_velocity = direction / direction_magnitude;
-//				cout << "ux: " << unitary_velocity.x << endl;
-//				cout << "uy: " << unitary_velocity.y << endl;
-				velocity = v0 * unitary_velocity;
-//				cout << "vx: " << velocity.x << endl;
-//				cout << "vy: " << velocity.y << endl;
-
-				character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
-				velocity.y * deltaTime.asSeconds()));
-
-				// If the player was pressing A and suddenly presses D
-				// this woulnd't really be true however, the frames go so fast
-				// that it becomes true very quickly
-				angle = ( angle + 90.f ) / 2;
-				character.setRotation(angle);
-			}
-			if (Keyboard::isKeyPressed(Keyboard::S) &&
-			!Keyboard::isKeyPressed(Keyboard::W)) {
-//				cout << "x: " << character.getPosition().x << endl;
-//				cout << "y: " << character.getPosition().y << endl;
-
-				// Pressing S modifies the direction vector,
-				// which is then normalized and multiplied by v0
-				direction += Vector2f(0,1);
-				float direction_magnitude = sqrt ( pow(direction.x,2) + 
-				pow(direction.y,2)  );
-				unitary_velocity = direction / direction_magnitude;
-//				cout << "ux: " << unitary_velocity.x << endl;
-//				cout << "uy: " << unitary_velocity.y << endl;
-				velocity = v0 * unitary_velocity;
-//				cout << "vx: " << velocity.x << endl;
-//				cout << "vy: " << velocity.y << endl;
-
-				character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
-				velocity.y * deltaTime.asSeconds()));
-
-				// If the player was pressing W and suddenly presses S
-				// this woulnd't really be true however, the frames go so fast
-				// that it becomes true very quickly
-				angle = ( angle + 180.f ) / 2;
-				character.setRotation(angle);
-			}
-			if (Keyboard::isKeyPressed(Keyboard::A) &&
-			!Keyboard::isKeyPressed(Keyboard::D)) {
-
-				// Pressing A modifies the direction vector,
-				// which is then normalized and multiplied by v0
-				direction += Vector2f(-1,0);
-				float direction_magnitude = sqrt ( pow(direction.x,2) + 
-				pow(direction.y,2)  );
-				unitary_velocity = direction / direction_magnitude;
-				velocity = v0 * unitary_velocity;
-
-				character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
-				velocity.y * deltaTime.asSeconds()));
-
-				// If the player was pressing D and suddenly presses A
-				// this woulnd't really be true however, the frames go so fast
-				// that it becomes true very quickly
-				angle = ( angle + 270.f ) / 2;
-				character.setRotation(angle);
-			}
-			if (Keyboard::isKeyPressed(Keyboard::W) &&
-			!Keyboard::isKeyPressed(Keyboard::S)) {
-
-				// Pressing W modifies the direction vector,
-				// which is then normalized and multiplied by v0
-				direction += Vector2f(0,-1);
-				float direction_magnitude = sqrt ( pow(direction.x,2) + 
-				pow(direction.y,2)  );
-				unitary_velocity = direction / direction_magnitude;
-				velocity = v0 * unitary_velocity;
-
-				character.move(Vector2f(velocity.x * deltaTime.asSeconds(),
-				velocity.y * deltaTime.asSeconds()));
-
-				if (Keyboard::isKeyPressed(Keyboard::A) &&
-				!Keyboard::isKeyPressed(Keyboard::D)) {
-					angle = 315.f;
-				} else if (Keyboard::isKeyPressed(Keyboard::D) &&
-				!Keyboard::isKeyPressed(Keyboard::A)) {
-					angle = 45.f;
-				} else { angle = 0.f; }
-
-				character.setRotation(angle);
-			}
-			elapsed -= deltaTime;
-		}
+			
+		// handle the character movement with the keyboard
+		keyboard_movement(elapsed);
 
 		// TODO: Bounding boxes
 		// You'll have to implement Collision Detection sometime
