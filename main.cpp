@@ -9,6 +9,13 @@ using namespace std;
 
 sf::Clock game_clock;
 
+// Declare the tile and it's apothem
+CircleShape hexagon;
+float hex_apothem = 20;
+// Declare the hexmap
+RenderTexture hexmap;
+IntRect hexmap_sprite_size(0, 0, 80, 80);
+
 int main() {
 
 	// Declare the window
@@ -35,11 +42,32 @@ int main() {
 	// The update to the origin cuts the initial print of the character on the RenderWindow
 	character.setPosition(TRIANGLE_BASE / 2, TRIANGLE_HEIGHT / 2);
 
+	// Define the hexagon
+	hexagon.setRadius(hex_apothem);
+	hexagon.setPointCount(6);
+	hexagon.setFillColor(Color::Transparent);
+	hexagon.setOutlineThickness(1.f);
+	// Define the hexmap
+	if (!hexmap.create(40,40)) { return -1; }
+	hexmap.setRepeated(true);
+
 	// run the program as long as the window is open
 	while (window.isOpen()) {
 
+
+		hexmap.clear(Color::Black);
+		hexmap.draw(hexagon);
+		hexmap.display();
+
 		window.clear(Color::Black);
+		
+		// Draw the hexmap RenderTexture
+		Sprite hexmap_sprite(hexmap.getTexture(), hexmap_sprite_size);
+		window.draw(hexmap_sprite);
+
+		// Draw the character ConvexShape
 		window.draw(character);
+
 		window.display();
 
 		// check all the window's events that were triggered since the last iteration of
