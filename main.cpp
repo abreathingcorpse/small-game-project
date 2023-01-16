@@ -9,12 +9,13 @@ using namespace std;
 
 sf::Clock game_clock;
 
-// Declare the tile and it's apothem
+// Declare the tile and its size 
 CircleShape hexagon;
-float hex_apothem = 20;
-// Declare the hexmap
-RenderTexture hexmap;
-IntRect hexmap_sprite_size(0, 0, 80, 80);
+float hex_size = 20;
+// Declare the hexgrid
+RenderTexture hexgrid;
+// I had to add +2 on the y size because for some reason otherwise it wasn't enough
+IntRect hexmap_size(0, 0, 4 * (3/2) * hex_size, (sqrt(3) * hex_size)+2);
 
 int main() {
 
@@ -43,27 +44,33 @@ int main() {
 	character.setPosition(TRIANGLE_BASE / 2, TRIANGLE_HEIGHT / 2);
 
 	// Define the hexagon
-	hexagon.setRadius(hex_apothem);
+	// TODO: Print the offseted hexagon
+	hexagon.setRadius(hex_size);
 	hexagon.setPointCount(6);
 	hexagon.setFillColor(Color::Transparent);
 	hexagon.setOutlineThickness(1.f);
-	// Define the hexmap
-	if (!hexmap.create(40,40)) { return -1; }
-	hexmap.setRepeated(true);
+	//hexagon.setOrigin(hex_size, sqrt(3)/2 * hex_size);
+	hexagon.setOrigin(sqrt(3)/2 * hex_size, hex_size);
+	hexagon.setRotation(30.f);
+	hexagon.setOrigin(hex_size, sqrt(3)/2 * hex_size);
+	hexagon.setPosition(hex_size, sqrt(3)/2 * hex_size);
+	// Define the hexgrid
+	if (!hexgrid.create(2 * hex_size,sqrt(3) * hex_size)) { return -1; }
+	hexgrid.setRepeated(true);
 
 	// run the program as long as the window is open
 	while (window.isOpen()) {
 
 
-		hexmap.clear(Color::Black);
-		hexmap.draw(hexagon);
-		hexmap.display();
+		hexgrid.clear(Color::Black);
+		hexgrid.draw(hexagon);
+		hexgrid.display();
 
 		window.clear(Color::Black);
 		
-		// Draw the hexmap RenderTexture
-		Sprite hexmap_sprite(hexmap.getTexture(), hexmap_sprite_size);
-		window.draw(hexmap_sprite);
+		// Draw the hexgrid RenderTexture
+		Sprite hexmap(hexgrid.getTexture(), hexmap_size);
+		window.draw(hexmap);
 
 		// Draw the character ConvexShape
 		window.draw(character);
