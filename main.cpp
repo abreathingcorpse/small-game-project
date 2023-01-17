@@ -11,11 +11,12 @@ sf::Clock game_clock;
 
 // Declare the tile and its size 
 CircleShape hexagon;
+CircleShape offseted_hexagon;
 float hex_size = 20;
 // Declare the hexgrid
 RenderTexture hexgrid;
 // I had to add +2 on the y size because for some reason otherwise it wasn't enough
-IntRect hexmap_size(0, 0, 4 * (3/2) * hex_size, (sqrt(3) * hex_size)+2);
+IntRect hexmap_size(0, 0, 4 * (4 * hex_size), 4 * (4 * (sqrt(3)/2) * hex_size));
 
 int main() {
 
@@ -49,13 +50,21 @@ int main() {
 	hexagon.setPointCount(6);
 	hexagon.setFillColor(Color::Transparent);
 	hexagon.setOutlineThickness(1.f);
-	//hexagon.setOrigin(hex_size, sqrt(3)/2 * hex_size);
-	hexagon.setOrigin(sqrt(3)/2 * hex_size, hex_size);
+	hexagon.setOrigin(sqrt(3)/2.f * hex_size, hex_size);
 	hexagon.setRotation(30.f);
-	hexagon.setOrigin(hex_size, sqrt(3)/2 * hex_size);
-	hexagon.setPosition(hex_size, sqrt(3)/2 * hex_size);
+	hexagon.setOrigin(hex_size, sqrt(3)/2.f * hex_size);
+	hexagon.setPosition(hex_size, sqrt(3)/2.f * hex_size);
+
+	offseted_hexagon.setRadius(hex_size);
+	offseted_hexagon.setPointCount(6);
+	offseted_hexagon.setFillColor(Color::Transparent);
+	offseted_hexagon.setOutlineThickness(1.f);
+	offseted_hexagon.setOrigin(sqrt(3)/2.f * hex_size, hex_size);
+	offseted_hexagon.setRotation(30.f);
+	offseted_hexagon.setOrigin(hex_size, sqrt(3)/2.f * hex_size);
+	offseted_hexagon.setPosition( (1+3/2.f) * hex_size, sqrt(3) * hex_size);
 	// Define the hexgrid
-	if (!hexgrid.create(2 * hex_size,sqrt(3) * hex_size)) { return -1; }
+	if (!hexgrid.create((7/2.f) * hex_size, (3/2.f)*sqrt(3) * hex_size)) { return -1; }
 	hexgrid.setRepeated(true);
 
 	// run the program as long as the window is open
@@ -64,6 +73,7 @@ int main() {
 
 		hexgrid.clear(Color::Black);
 		hexgrid.draw(hexagon);
+		hexgrid.draw(offseted_hexagon);
 		hexgrid.display();
 
 		window.clear(Color::Black);
