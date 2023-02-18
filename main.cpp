@@ -12,37 +12,7 @@ sf::Clock game_clock;
 // Declare the tile and its size 
 CircleShape hexagon;
 //CircleShape offseted_hexagon;
-const float g_hex_size = 20;
-
-/*class HexagonShape : public CircleShape {
-	public:
-		HexagonShape(Vector2f hexagon_position)
-		: CircleShape(g_hex_size, 6) 
-		{
-			this->setPosition(hexagon_position);
-		}
-		void setHexagonPosition (Vector2f hexagon_position) {
-			hexagon.setPosition(hexagon_position);
-		}*/
-		/*void setRadius(float hex_size);
-		void setPointCount(size_t 6);*/
-
-		
-		//void setFillColor(Color Color::Transparent);
-	/*private:
-		CircleShape hexagon;
-		hexagon.setRadius(hex_size);	
-		hexagon.setPointCount(6);
-		hexagon.setFillColor(Color::Transparent);
-		hexagon.setOutlineThickness(1.f);
-		hexagon.setOrigin(sqrt(3)/2.f * hex_size, hex_size);
-		hexagon.setRotation(30.f);
-		hexagon.setOrigin(hex_size, sqrt(3)/2.f * hex_size);*/
-/*};*/
-// Declare the hexgrid
-//RenderTexture hexgrid;
-// I had to add +2 on the y size because for some reason otherwise it wasn't enough
-//IntRect hexmap_size(0, 0, 4 * (4 * g_hex_size), 4 * (4 * (sqrt(3)/2) *g_hex_size));
+const unsigned int g_hex_size = 20;
 
 int main() {
 
@@ -70,6 +40,33 @@ int main() {
 	// The update to the origin cuts the initial print of the character on the RenderWindow
 	character.setPosition(TRIANGLE_BASE / 2, TRIANGLE_HEIGHT / 2);
 
+	// calculate the size of the hexgrid
+	Vector2u window_size = window.getSize();
+
+	cout << "window_size_x: " << window_size.x << endl;
+	cout << "window_size_y: " << window_size.y << endl;
+	
+	int delta_x = window_size.x % ( 2*g_hex_size );
+	cout << "delta_x: " << delta_x << endl;
+	int delta_y = window_size.y % static_cast<int>(( sqrt(3)*g_hex_size ));
+	cout << "delta_y: " << delta_y << endl;
+	
+	/*double delta_y = ceil(sqrt(3)*g_hex_size);
+	cout << "double delta_y: " << delta_y << endl;
+	int casted_delta_y = static_cast<int>(sqrt(3)*g_hex_size);
+	cout << "int delta_y: " << casted_delta_y << endl;*/
+	int max_x_hexagons = ceil((window_size.x - delta_x)/(2*g_hex_size));
+	int max_y_hexagons = (window_size.y - delta_y)/(sqrt(3)*g_hex_size);
+
+	cout << "n: " << max_x_hexagons << endl;
+	cout << "m: " << max_y_hexagons << endl;
+
+	Vector2f hexgrid[max_x_hexagons][max_y_hexagons];
+	hexgrid[0][0] = Vector2f(g_hex_size, sqrt(3)/2.f * g_hex_size);
+	hexgrid[0][1] = Vector2f(5*g_hex_size/2, sqrt(3) * g_hex_size);
+	hexgrid[1][0] = Vector2f(g_hex_size, 3*sqrt(3) * g_hex_size/2);
+	hexgrid[1][1] = Vector2f(5*g_hex_size/2, 2*sqrt(3) * g_hex_size);
+
 	// Define the hexagon
 	// TODO: Print the offseted hexagon
 	hexagon.setRadius(g_hex_size);
@@ -81,45 +78,27 @@ int main() {
 	hexagon.setOrigin(g_hex_size, sqrt(3)/2.f * g_hex_size);
 	hexagon.setPosition(g_hex_size, sqrt(3)/2.f * g_hex_size);
 
-	/*offseted_hexagon.setRadius(hex_size);
-	offseted_hexagon.setPointCount(6);
-	offseted_hexagon.setFillColor(Color::Transparent);
-	offseted_hexagon.setOutlineThickness(1.f);
-	offseted_hexagon.setOrigin(sqrt(3)/2.f * hex_size, hex_size);
-	offseted_hexagon.setRotation(30.f);
-	offseted_hexagon.setOrigin(hex_size, sqrt(3)/2.f * hex_size);
-	offseted_hexagon.setPosition( (1+3/2.f) * hex_size, sqrt(3) * hex_size);*/
-	// Define the hexgrid
-	/*if (!hexgrid.create((7/2.f) * g_hex_size, (3/2.f)*sqrt(3) * g_hex_size)) { return -1; }
-	hexgrid.setRepeated(true);*/
-
 	// run the program as long as the window is open
 	while (window.isOpen()) {
 
-
-		/*hexgrid.clear(Color::Black);
-		hexgrid.draw(hexagon);
-//		hexgrid.draw(offseted_hexagon);
-		hexgrid.display();*/
-
 		window.clear(Color::Black);
 		
-		// Draw the hexgrid RenderTexture
-	/*	Sprite hexmap(hexgrid.getTexture(), hexmap_size);
-		window.draw(hexmap); */
-
 
 		// Draw the o_0,0 hexagon
-		hexagon.setPosition(g_hex_size, sqrt(3)/2.f * g_hex_size);
+//		hexagon.setPosition(g_hex_size, sqrt(3)/2.f * g_hex_size);
+		hexagon.setPosition(hexgrid[0][0]);
 		window.draw(hexagon);
 		// Draw the o_0,1 hexagon
-		hexagon.setPosition(5*g_hex_size/2, sqrt(3) * g_hex_size);
+//		hexagon.setPosition(5*g_hex_size/2, sqrt(3) * g_hex_size);
+		hexagon.setPosition(hexgrid[0][1]);
 		window.draw(hexagon);
 		// Draw the o_1,0 hexagon
-		hexagon.setPosition(g_hex_size, 3*sqrt(3) * g_hex_size/2);
+//		hexagon.setPosition(g_hex_size, 3*sqrt(3) * g_hex_size/2);
+		hexagon.setPosition(hexgrid[1][0]);
 		window.draw(hexagon);
 		// Draw the o_1,1 hexagon
-		hexagon.setPosition( 5*g_hex_size/2, 2*g_hex_size*sqrt(3) );
+//		hexagon.setPosition( 5*g_hex_size/2, 2*g_hex_size*sqrt(3) );
+		hexagon.setPosition(hexgrid[1][1]);
 		window.draw(hexagon);
 
 		// Draw the character ConvexShape
