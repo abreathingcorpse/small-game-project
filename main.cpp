@@ -12,7 +12,7 @@ sf::Clock game_clock;
 // Declare the tile and its size 
 CircleShape hexagon;
 //CircleShape offseted_hexagon;
-const unsigned int g_hex_size = 20;
+const float g_hex_size = 20;
 
 int main() {
 
@@ -46,7 +46,7 @@ int main() {
 	cout << "window_size_x: " << window_size.x << endl;
 	cout << "window_size_y: " << window_size.y << endl;
 	
-	int delta_x = window_size.x % ( 2*g_hex_size );
+	int delta_x = window_size.x % static_cast<int>((3/2)*g_hex_size);
 	cout << "delta_x: " << delta_x << endl;
 	int delta_y = window_size.y % static_cast<int>(( sqrt(3)*g_hex_size ));
 	cout << "delta_y: " << delta_y << endl;
@@ -55,17 +55,44 @@ int main() {
 	cout << "double delta_y: " << delta_y << endl;
 	int casted_delta_y = static_cast<int>(sqrt(3)*g_hex_size);
 	cout << "int delta_y: " << casted_delta_y << endl;*/
-	int max_x_hexagons = ceil((window_size.x - delta_x)/(2*g_hex_size));
+//	int max_x_hexagons = ceil((window_size.x - delta_x)/(2*g_hex_size));
+	int max_x_hexagons = (1/3.f) * (2*window_size.x/g_hex_size - 2*delta_x/g_hex_size - 1);
 	int max_y_hexagons = (window_size.y - delta_y)/(sqrt(3)*g_hex_size);
 
 	cout << "n: " << max_x_hexagons << endl;
 	cout << "m: " << max_y_hexagons << endl;
 
-	Vector2f hexgrid[max_x_hexagons][max_y_hexagons];
-	hexgrid[0][0] = Vector2f(g_hex_size, sqrt(3)/2.f * g_hex_size);
+	Vector2f hexgrid[max_y_hexagons][max_x_hexagons];
+	/*hexgrid[0][0] = Vector2f(g_hex_size, sqrt(3)/2.f * g_hex_size);
 	hexgrid[0][1] = Vector2f(5*g_hex_size/2, sqrt(3) * g_hex_size);
 	hexgrid[1][0] = Vector2f(g_hex_size, 3*sqrt(3) * g_hex_size/2);
 	hexgrid[1][1] = Vector2f(5*g_hex_size/2, 2*sqrt(3) * g_hex_size);
+*/
+	for(int i=0;i<max_y_hexagons;i++){
+		int j=0;
+		float a = 0;
+		if(i==0 && j==0) {
+			hexgrid[0][0] = Vector2f(1, sqrt(3)/2.f) * g_hex_size;
+/*			cout << "hexgrid[0][0]: (" << hexgrid[0][0].x << "," << hexgrid[0][0].y
+			<< ")" << endl;*/
+		} else {
+			hexgrid[i][0] = hexgrid[i-1][0] + Vector2f(0,sqrt(3)) * g_hex_size;
+/*			cout << "hexgrid[" << i << "][0]: (" << hexgrid[i][0].x << ","
+			<< hexgrid[i][0].y << ")" << endl;*/
+		}
+		for(j=1;j<max_x_hexagons;j++) {
+//		while(j<max_x_hexagons) {
+			if(j%2) {
+				a = sqrt(3)/2;
+			} else {
+				a = - sqrt(3)/2;
+			}
+			hexgrid[i][j] = hexgrid[i][j-1] + Vector2f(3/2.f, a) * g_hex_size;
+/*			cout << "hexgrid[" << i << "][" << j << "]: (" << hexgrid[i][j].x << ","
+			<< hexgrid[i][j].y << ")" << endl;*/
+//			j++;
+		}
+	}
 
 	// Define the hexagon
 	// TODO: Print the offseted hexagon
@@ -78,6 +105,7 @@ int main() {
 	hexagon.setOrigin(g_hex_size, sqrt(3)/2.f * g_hex_size);
 	hexagon.setPosition(g_hex_size, sqrt(3)/2.f * g_hex_size);
 
+	cout << "Going inside the Game Loop..." << endl;
 	// run the program as long as the window is open
 	while (window.isOpen()) {
 
@@ -86,7 +114,7 @@ int main() {
 
 		// Draw the o_0,0 hexagon
 //		hexagon.setPosition(g_hex_size, sqrt(3)/2.f * g_hex_size);
-		hexagon.setPosition(hexgrid[0][0]);
+/*		hexagon.setPosition(hexgrid[0][0]);
 		window.draw(hexagon);
 		// Draw the o_0,1 hexagon
 //		hexagon.setPosition(5*g_hex_size/2, sqrt(3) * g_hex_size);
@@ -100,6 +128,15 @@ int main() {
 //		hexagon.setPosition( 5*g_hex_size/2, 2*g_hex_size*sqrt(3) );
 		hexagon.setPosition(hexgrid[1][1]);
 		window.draw(hexagon);
+*/	
+		for(int i=0;i<max_y_hexagons;i++){
+			for(int j=0;j<max_x_hexagons;j++) {
+				hexagon.setPosition(hexgrid[i][j]);
+/*				cout << "hexgrid[" << i << "][" << j << "]: (" << hexgrid[i][j].x
+				<< "," << hexgrid[i][j].y << ")" << endl;*/
+				window.draw(hexagon);
+			}
+		}
 
 		// Draw the character ConvexShape
 		window.draw(character);
