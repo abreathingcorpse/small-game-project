@@ -42,56 +42,54 @@ int main() {
 
 	// calculate the size of the hexgrid
 	Vector2u window_size = window.getSize();
-
-	cout << "window_size_x: " << window_size.x << endl;
-	cout << "window_size_y: " << window_size.y << endl;
 	
 	int delta_x = window_size.x % static_cast<int>((3/2)*g_hex_size);
-	cout << "delta_x: " << delta_x << endl;
 	int delta_y = window_size.y % static_cast<int>(( sqrt(3)*g_hex_size ));
-	cout << "delta_y: " << delta_y << endl;
 	
-	/*double delta_y = ceil(sqrt(3)*g_hex_size);
-	cout << "double delta_y: " << delta_y << endl;
-	int casted_delta_y = static_cast<int>(sqrt(3)*g_hex_size);
-	cout << "int delta_y: " << casted_delta_y << endl;*/
-//	int max_x_hexagons = ceil((window_size.x - delta_x)/(2*g_hex_size));
 	int max_x_hexagons = (1/3.f) * (2*window_size.x/g_hex_size - 2*delta_x/g_hex_size - 1);
 	int max_y_hexagons = (window_size.y - delta_y)/(sqrt(3)*g_hex_size);
 
-	cout << "n: " << max_x_hexagons << endl;
-	cout << "m: " << max_y_hexagons << endl;
+	// Added a +2 for the padding
+	Vector2f hexgrid[max_y_hexagons + 2][max_x_hexagons + 2];
 
-	Vector2f hexgrid[max_y_hexagons][max_x_hexagons];
-	/*hexgrid[0][0] = Vector2f(g_hex_size, sqrt(3)/2.f * g_hex_size);
-	hexgrid[0][1] = Vector2f(5*g_hex_size/2, sqrt(3) * g_hex_size);
-	hexgrid[1][0] = Vector2f(g_hex_size, 3*sqrt(3) * g_hex_size/2);
-	hexgrid[1][1] = Vector2f(5*g_hex_size/2, 2*sqrt(3) * g_hex_size);
-*/
-	for(int i=0;i<max_y_hexagons;i++){
-		int j=0;
+	// fill out the positions for the main hexgrid
+	// as well as the right and bottom paddings and most of the left padding
+	for(int i=1;i<max_y_hexagons+2;i++){
+		int j=1;
 		float a = 0;
-		if(i==0 && j==0) {
-			hexgrid[0][0] = Vector2f(1, sqrt(3)/2.f) * g_hex_size;
-/*			cout << "hexgrid[0][0]: (" << hexgrid[0][0].x << "," << hexgrid[0][0].y
-			<< ")" << endl;*/
+		if(i==1 && j==1) {
+			hexgrid[1][1] = Vector2f(1, sqrt(3)/2.f) * g_hex_size;
 		} else {
-			hexgrid[i][0] = hexgrid[i-1][0] + Vector2f(0,sqrt(3)) * g_hex_size;
-/*			cout << "hexgrid[" << i << "][0]: (" << hexgrid[i][0].x << ","
-			<< hexgrid[i][0].y << ")" << endl;*/
+			hexgrid[i][1] = hexgrid[i-1][1] + Vector2f(0,sqrt(3)) * g_hex_size;
 		}
-		for(j=1;j<max_x_hexagons;j++) {
-//		while(j<max_x_hexagons) {
-			if(j%2) {
-				a = sqrt(3)/2;
-			} else {
+
+		// fill out the left padding
+		a = - sqrt(3)/2; // set the value for the left padding
+		hexgrid[i][0] = hexgrid[i][1] - Vector2f(3/2.f, a) * g_hex_size;
+
+		for(j=2;j<max_x_hexagons+2;j++) {
+			if(j%2) { // checks if odd
 				a = - sqrt(3)/2;
+			} else {
+				a = sqrt(3)/2;
 			}
 			hexgrid[i][j] = hexgrid[i][j-1] + Vector2f(3/2.f, a) * g_hex_size;
-/*			cout << "hexgrid[" << i << "][" << j << "]: (" << hexgrid[i][j].x << ","
-			<< hexgrid[i][j].y << ")" << endl;*/
-//			j++;
 		}
+	}
+
+	// fill out the hexgrid[0][0]
+	hexgrid[0][0] = hexgrid[0][1] - Vector2f(3/2.f, - sqrt(3)/2) * g_hex_size;
+	
+	// loop around the top padding of the hexgrid
+	hexgrid[0][1] = hexgrid[1][1] - Vector2f(0,sqrt(3)) * g_hex_size;
+	for(int j=2;j<max_x_hexagons+2;j++) {
+		float a = 0;
+		if(j%2) { // checks if odd
+			a = - sqrt(3)/2;
+		} else {
+			a = sqrt(3)/2;
+		}
+		hexgrid[0][j] = hexgrid[0][j-1] + Vector2f(3/2.f, a) * g_hex_size;	
 	}
 
 	// Define the hexagon
@@ -105,37 +103,38 @@ int main() {
 	hexagon.setOrigin(g_hex_size, sqrt(3)/2.f * g_hex_size);
 	hexagon.setPosition(g_hex_size, sqrt(3)/2.f * g_hex_size);
 
-	cout << "Going inside the Game Loop..." << endl;
+//	cout << "Going inside the Game Loop..." << endl;
 	// run the program as long as the window is open
 	while (window.isOpen()) {
 
 		window.clear(Color::Black);
 		
-
-		// Draw the o_0,0 hexagon
-//		hexagon.setPosition(g_hex_size, sqrt(3)/2.f * g_hex_size);
-/*		hexagon.setPosition(hexgrid[0][0]);
-		window.draw(hexagon);
-		// Draw the o_0,1 hexagon
-//		hexagon.setPosition(5*g_hex_size/2, sqrt(3) * g_hex_size);
-		hexagon.setPosition(hexgrid[0][1]);
-		window.draw(hexagon);
-		// Draw the o_1,0 hexagon
-//		hexagon.setPosition(g_hex_size, 3*sqrt(3) * g_hex_size/2);
-		hexagon.setPosition(hexgrid[1][0]);
-		window.draw(hexagon);
-		// Draw the o_1,1 hexagon
-//		hexagon.setPosition( 5*g_hex_size/2, 2*g_hex_size*sqrt(3) );
-		hexagon.setPosition(hexgrid[1][1]);
-		window.draw(hexagon);
-*/	
-		for(int i=0;i<max_y_hexagons;i++){
-			for(int j=0;j<max_x_hexagons;j++) {
-				hexagon.setPosition(hexgrid[i][j]);
-/*				cout << "hexgrid[" << i << "][" << j << "]: (" << hexgrid[i][j].x
-				<< "," << hexgrid[i][j].y << ")" << endl;*/
-				window.draw(hexagon);
+		for(int i=0;i<max_y_hexagons+1;i++){
+			for(int j=0;j<max_x_hexagons+1;j++) {
+				if (i==0 || j==0){
+					// draw the top & left paddings
+					hexagon.setPosition(hexgrid[i][j]);
+					hexagon.setOutlineColor(Color::Yellow);
+					window.draw(hexagon);
+					hexagon.setOutlineColor(Color::White);
+				} else { // draws the main hexgrid
+					hexagon.setPosition(hexgrid[i][j]);
+					window.draw(hexagon);
+				}
 			}
+			// draw the right padding
+			hexagon.setPosition(hexgrid[i][max_x_hexagons+1]);
+			hexagon.setOutlineColor(Color::Yellow);
+			window.draw(hexagon);
+			hexagon.setOutlineColor(Color::White);
+		}
+
+		// Draw the bottom padding
+		for(int j=1;j<max_x_hexagons+2;j++) {
+			hexagon.setPosition(hexgrid[max_y_hexagons+1][j]);
+			hexagon.setOutlineColor(Color::Yellow);
+			window.draw(hexagon);
+			hexagon.setOutlineColor(Color::White);
 		}
 
 		// Draw the character ConvexShape
@@ -171,14 +170,6 @@ int main() {
 			// static const std::vector<VideoMode>& VideoMode::getFullscreenModes	()
 			// returns: Array containing all the supported fullscreen modes
 			// When? whenever the key 'V'
-			
-			/* Making the Character rotate by pressing R was more of a test,
-			is this truly needed?
-
-			if (event.type == Event::KeyPressed && event.key.code == Keyboard::R) {
-				character.rotate(angle); // angle was set to 45 at movement.h
-			}
-			*/
 
 		} // pollEvent
 	} // window is open
