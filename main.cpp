@@ -2,17 +2,13 @@
 #include <iostream> // for debugging
 #include "support.h"
 #include "movement.h"
+#include "hexgrid.h"
 
 // Declaring the namespaces
 using namespace sf;
 using namespace std;
 
 sf::Clock game_clock;
-
-// Declare the tile and its size 
-CircleShape hexagon;
-//CircleShape offseted_hexagon;
-const float g_hex_size = 20;
 
 int main() {
 
@@ -41,20 +37,14 @@ int main() {
 	character.setPosition(TRIANGLE_BASE / 2, TRIANGLE_HEIGHT / 2);
 
 	// calculate the size of the hexgrid
-	Vector2u window_size = window.getSize();
-	
-	int delta_x = window_size.x % static_cast<int>((3/2)*g_hex_size);
-	int delta_y = window_size.y % static_cast<int>(( sqrt(3)*g_hex_size ));
-	
-	int max_x_hexagons = (1/3.f) * (2*window_size.x/g_hex_size - 2*delta_x/g_hex_size - 1);
-	int max_y_hexagons = (window_size.y - delta_y)/(sqrt(3)*g_hex_size);
+	Vector2u max_hexagons = calculate_hexgrid_size(window);
 
 	// Added a +2 for the padding
-	Vector2f hexgrid[max_y_hexagons + 2][max_x_hexagons + 2];
+	Vector2f hexgrid[max_hexagons.y + 2][max_hexagons.x + 2];
 
 	// fill out the positions for the main hexgrid
 	// as well as the right and bottom paddings and most of the left padding
-	for(int i=1;i<max_y_hexagons+2;i++){
+	for(int i=1;i<max_hexagons.y+2;i++){
 		int j=1;
 		float a = 0;
 		if(i==1 && j==1) {
@@ -67,7 +57,7 @@ int main() {
 		a = - sqrt(3)/2; // set the value for the left padding
 		hexgrid[i][0] = hexgrid[i][1] - Vector2f(3/2.f, a) * g_hex_size;
 
-		for(j=2;j<max_x_hexagons+2;j++) {
+		for(j=2;j<max_hexagons.x+2;j++) {
 			if(j%2) { // checks if odd
 				a = - sqrt(3)/2;
 			} else {
@@ -82,7 +72,7 @@ int main() {
 	
 	// loop around the top padding of the hexgrid
 	hexgrid[0][1] = hexgrid[1][1] - Vector2f(0,sqrt(3)) * g_hex_size;
-	for(int j=2;j<max_x_hexagons+2;j++) {
+	for(int j=2;j<max_hexagons.x+2;j++) {
 		float a = 0;
 		if(j%2) { // checks if odd
 			a = - sqrt(3)/2;
@@ -109,8 +99,8 @@ int main() {
 
 		window.clear(Color::Black);
 		
-		for(int i=0;i<max_y_hexagons+1;i++){
-			for(int j=0;j<max_x_hexagons+1;j++) {
+		for(int i=0;i<max_hexagons.y+1;i++){
+			for(int j=0;j<max_hexagons.x+1;j++) {
 				if (i==0 || j==0){
 					// draw the top & left paddings
 					hexagon.setPosition(hexgrid[i][j]);
@@ -123,15 +113,15 @@ int main() {
 				}
 			}
 			// draw the right padding
-			hexagon.setPosition(hexgrid[i][max_x_hexagons+1]);
+			hexagon.setPosition(hexgrid[i][max_hexagons.x+1]);
 			hexagon.setOutlineColor(Color::Yellow);
 			window.draw(hexagon);
 			hexagon.setOutlineColor(Color::White);
 		}
 
 		// Draw the bottom padding
-		for(int j=1;j<max_x_hexagons+2;j++) {
-			hexagon.setPosition(hexgrid[max_y_hexagons+1][j]);
+		for(int j=1;j<max_hexagons.x+2;j++) {
+			hexagon.setPosition(hexgrid[max_hexagons.y+1][j]);
 			hexagon.setOutlineColor(Color::Yellow);
 			window.draw(hexagon);
 			hexagon.setOutlineColor(Color::White);
