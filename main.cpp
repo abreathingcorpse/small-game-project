@@ -44,7 +44,7 @@ int main() {
 
 	// fill out the positions for the main hexgrid
 	// as well as the right and bottom paddings and most of the left padding
-	for(int i=1;i<max_hexagons.y+2;i++){
+	/*for(int i=1;i<max_hexagons.y+2;i++){
 		int j=1;
 		float a = 0;
 		if(i==1 && j==1) {
@@ -67,11 +67,12 @@ int main() {
 		}
 	}
 
-	// fill out the hexgrid[0][0]
-	hexgrid[0][0] = hexgrid[0][1] - Vector2f(3/2.f, - sqrt(3)/2) * g_hex_size;
+
+	fill_hexgrid(&hexgrid[0][0], max_hexagons);
 	
 	// loop around the top padding of the hexgrid
 	hexgrid[0][1] = hexgrid[1][1] - Vector2f(0,sqrt(3)) * g_hex_size;
+	hexgrid[0][0] = hexgrid[0][1] - Vector2f(3/2.f, - sqrt(3)/2) * g_hex_size;
 	for(int j=2;j<max_hexagons.x+2;j++) {
 		float a = 0;
 		if(j%2) { // checks if odd
@@ -80,10 +81,11 @@ int main() {
 			a = sqrt(3)/2;
 		}
 		hexgrid[0][j] = hexgrid[0][j-1] + Vector2f(3/2.f, a) * g_hex_size;	
-	}
+	}*/
+
+	fill_hexgrid(&hexgrid[0][0], max_hexagons);
 
 	// Define the hexagon
-	// TODO: Print the offseted hexagon
 	hexagon.setRadius(g_hex_size);
 	hexagon.setPointCount(6);
 	hexagon.setFillColor(Color::Transparent);
